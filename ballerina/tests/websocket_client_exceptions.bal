@@ -76,6 +76,7 @@ public function testConnectionError() returns Error? {
 // The frame exceeds the max frame length
 @test:Config {}
 public function testLongFrameError() returns Error? {
+    io:println("testLongFrameError");
    string ping = "pingpingpingpingpingpingpingpingpingpingpingpingpingpingpingpingpingpingpingpingpingpingping"
        + "pingpingpingpingpingpingpingpingpingpingpingpingpingping";
    byte[] pingData = ping.toBytes();
@@ -88,14 +89,15 @@ public function testLongFrameError() returns Error? {
    } else {
        test:assertFail("Mismatched output");
    }
-   error? result = wsClientEp->close(statusCode = 1000, reason = "Close the connection", timeout = 0);
+   error? result = wsClientEp->close(statusCode = 1000, reason = "Close the connection", timeout = 1);
 }
 
 // Close the connection and push text
 @test:Config {}
 public function testConnectionClosedError() returns Error? {
+    io:println("testConnectionClosedError");
    Client wsClientEp = check new ("ws://localhost:21030/websocket");
-   error? result = wsClientEp->close(timeout = 0);
+   error? result = wsClientEp->close(timeout = 1);
    runtime:sleep(2);
    var err = wsClientEp->writeTextMessage("some");
    if err is error {
@@ -108,6 +110,7 @@ public function testConnectionClosedError() returns Error? {
 // Handshake failing because of missing subprotocol
 @test:Config {}
 public function testHandshakeError() returns Error? {
+    io:println("testHandshakeError");
    Error|Client wsClientEp = new ("ws://localhost:21030/websocket", config = config);
    if wsClientEp is Error {
       errMessage = wsClientEp.message();
