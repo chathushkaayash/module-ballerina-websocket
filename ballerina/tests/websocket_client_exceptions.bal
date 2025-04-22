@@ -38,7 +38,7 @@ service /websocket on l14 {
 
 service class ErrorServer {
   *Service;
-  
+
    remote isolated function onOpen(Caller caller) {
        io:println("The Connection ID websocket client exceptions test: " + caller.getConnectionId());
    }
@@ -98,6 +98,7 @@ public function testLongFrameError() returns Error? {
 public function testConnectionClosedError() returns Error? {
     io:println("testConnectionClosedError");
    Client wsClientEp = check new ("ws://localhost:21030/websocket");
+   runtime:sleep(2);
    error? result = wsClientEp->close(timeout = 0);
    runtime:sleep(2);
    var err = wsClientEp->writeTextMessage("some");
