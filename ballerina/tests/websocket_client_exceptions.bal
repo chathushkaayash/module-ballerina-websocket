@@ -78,6 +78,7 @@ public function testConnectionError() returns Error? {
 public function testLongFrameError() returns Error? {
    string ping = "pingpingpingpingpingpingpingpingpingpingpingpingpingpingpingpingpingpingpingpingpingpingping"
        + "pingpingpingpingpingpingpingpingpingpingpingpingpingping";
+       
    byte[] pingData = ping.toBytes();
    Client wsClientEp = check new ("ws://localhost:21030/websocket");
    runtime:sleep(0.5);
