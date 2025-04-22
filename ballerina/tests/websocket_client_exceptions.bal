@@ -89,7 +89,7 @@ public function testLongFrameError() returns Error? {
    } else {
        test:assertFail("Mismatched output");
    }
-   error? result = wsClientEp->close(statusCode = 1000, reason = "Close the connection", timeout = 1);
+   error? result = wsClientEp->close(statusCode = 1000, reason = "Close the connection", timeout = 0);
 }
 
 // Close the connection and push text
@@ -97,7 +97,7 @@ public function testLongFrameError() returns Error? {
 public function testConnectionClosedError() returns Error? {
     io:println("testConnectionClosedError");
    Client wsClientEp = check new ("ws://localhost:21030/websocket");
-   error? result = wsClientEp->close(timeout = 1);
+   error? result = wsClientEp->close(timeout = 0);
    runtime:sleep(2);
    var err = wsClientEp->writeTextMessage("some");
    if err is error {
