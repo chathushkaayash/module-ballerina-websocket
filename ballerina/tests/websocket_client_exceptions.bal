@@ -96,6 +96,7 @@ public function testLongFrameError() returns Error? {
 @test:Config {}
 public function testConnectionClosedError() returns Error? {
     io:println("testConnectionClosedError");
+    io:println("testConnectionClosedError");
    Client wsClientEp = check new ("ws://localhost:21030/websocket");
    error? result = wsClientEp->close(timeout = 1);
    runtime:sleep(2);
