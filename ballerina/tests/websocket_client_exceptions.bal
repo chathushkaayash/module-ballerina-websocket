@@ -111,10 +111,14 @@ public function testConnectionClosedError() returns Error? {
 // Handshake failing because of missing subprotocol
 @test:Config {}
 public function testHandshakeError() returns Error? {
-    io:println("testHandshakeError");
+    io:println("testHandshakeError 1");
    Error|Client wsClientEp = new ("ws://localhost:21030/websocket", config = config);
+    io:println("testHandshakeError 2");
    if wsClientEp is Error {
+      io:println("testHandshakeError 3");
       errMessage = wsClientEp.message();
    }
+   io:println("testHandshakeError 4");
    test:assertEquals(errMessage, "InvalidHandshakeError: Invalid subprotocol. Actual: null. Expected one of: xml");
+   io:println("testHandshakeError 5");
 }
