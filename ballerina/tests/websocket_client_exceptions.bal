@@ -38,6 +38,7 @@ service /websocket on l14 {
 
 service class ErrorServer {
   *Service;
+  
    remote isolated function onOpen(Caller caller) {
        io:println("The Connection ID websocket client exceptions test: " + caller.getConnectionId());
    }
@@ -76,6 +77,7 @@ public function testConnectionError() returns Error? {
 // The frame exceeds the max frame length
 @test:Config {}
 public function testLongFrameError() returns Error? {
+    io:println("testLongFrameError");
    string ping = "pingpingpingpingpingpingpingpingpingpingpingpingpingpingpingpingpingpingpingpingpingpingping"
        + "pingpingpingpingpingpingpingpingpingpingpingpingpingping";
    byte[] pingData = ping.toBytes();
@@ -94,7 +96,9 @@ public function testLongFrameError() returns Error? {
 // Close the connection and push text
 @test:Config {}
 public function testConnectionClosedError() returns Error? {
+    io:println("testConnectionClosedError");
    Client wsClientEp = check new ("ws://localhost:21030/websocket");
+   runtime:sleep(2);
    error? result = wsClientEp->close(timeout = 0);
    runtime:sleep(2);
    var err = wsClientEp->writeTextMessage("some");
@@ -108,9 +112,14 @@ public function testConnectionClosedError() returns Error? {
 // Handshake failing because of missing subprotocol
 @test:Config {}
 public function testHandshakeError() returns Error? {
+    io:println("testHandshakeError 1");
    Error|Client wsClientEp = new ("ws://localhost:21030/websocket", config = config);
+    io:println("testHandshakeError 2");
    if wsClientEp is Error {
+      io:println("testHandshakeError 3");
       errMessage = wsClientEp.message();
    }
+   io:println("testHandshakeError 4");
    test:assertEquals(errMessage, "InvalidHandshakeError: Invalid subprotocol. Actual: null. Expected one of: xml");
+   io:println("testHandshakeError 5");
 }
